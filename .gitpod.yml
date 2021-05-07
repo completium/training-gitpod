@@ -22,6 +22,8 @@ vscode:
   extensions:
     - ligolang-publish.ligo-vscode@0.4.2
     - Ligo.ligo-tools@0.0.1
+    - serokell-io.michelson-debugger@0.1.1
+    - baking-bad.michelson@0.1.0
 #tasks:
 #  - openMode: tab-after
 #    command: |-
