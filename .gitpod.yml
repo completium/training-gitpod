@@ -22,15 +22,16 @@ vscode:
   extensions:
     - ligolang-publish.ligo-vscode@0.4.2
     - Ligo.ligo-tools@0.0.1
-#tasks:
-#  - openMode: tab-after
-#    command: |-
-#      clear && echo '
-#      Welcome to Try archetype!
-#
-#      Type in this terminal below:
-#
-#      sh start.sh
+    - serokell-io.michelson-debugger@0.1.1
+    - baking-bad.michelson@0.1.0
+tasks:
+  - name: Setup Michleson code plugin
+    command: |
+      WelcomeFile='/workspace/training-gitpod/Welcome.md'
+      # gp or code won't work until the IDE GUI is ready
+      until gp open ${WelcomeFile} ; do sleep 1; done
+      code --install-extension /home/.2HzpexT7tKMixL.vsix
+      clear
 #
 #
 #
