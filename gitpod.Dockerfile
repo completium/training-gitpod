@@ -24,6 +24,6 @@ RUN completium-cli set account admin
 RUN sudo ln -s /home/gitpod/.completium/bin/archetype /usr/local/bin/
 
 # Download NL's Michelson vs-studio plugin
-RUN sudo wget -q https://cloud.tzalpha.net/s/2HzpexT7tKMiMxL/download -O /home/.2HzpexT7tKMixL.vsix
+# RUN sudo wget -q https://cloud.tzalpha.net/s/2HzpexT7tKMiMxL/download -O /home/.2HzpexT7tKMixL.vsix
 #RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
 
