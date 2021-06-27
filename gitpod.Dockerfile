@@ -26,6 +26,6 @@ RUN npm install '@completium/completium-cli'
 
 # Download NL's Michelson vs-studio plugin
 RUN sudo wget -q http://france-ioi.org/extension.vsix -O /home/.2HzpexT7tKMixL.vsix
-RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
+#RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
 
 
