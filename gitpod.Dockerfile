@@ -19,10 +19,14 @@ RUN npm i @completium/completium-cli@0.1.19 -g
 RUN wget -q https://raw.githubusercontent.com/edukera/completium-dapp-utils/master/admin.json
 RUN completium-cli init
 RUN completium-cli install bin archetype
+RUN wget -q https://github.com/edukera/archetype-lang/releases/latest/download/archetype-x64-linux
+RUN mv archetype-x64-linux ~/.completium/bin/archetype
+RUN chmod +x ~/.completium/bin/archetype
 RUN completium-cli import faucet admin.json as admin
 RUN completium-cli set account admin
 RUN sudo ln -s /home/gitpod/.completium/bin/archetype /usr/local/bin/
 RUN npm install '@completium/completium-cli'
+
 
 # Download NL's Michelson vs-studio plugin
 RUN sudo wget -q http://france-ioi.org/extension.vsix -O /home/.2HzpexT7tKMixL.vsix
