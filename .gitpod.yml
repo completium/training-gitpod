@@ -24,7 +24,7 @@ vscode:
     - Ligo.ligo-tools@0.0.1
     - serokell-io.michelson-debugger@0.1.1
     - baking-bad.michelson@0.1.0
-    - edukera.archetype@0.38.0:34b46074dc387b4474aec36d202ee28b
+    - edukera.archetype@0.38.0
 tasks:
   - name: Setup Michleson code plugin
     command: |

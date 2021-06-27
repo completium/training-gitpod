@@ -1,0 +1,22 @@
+archetype timelock(deadline : date)
+
+constant owner : address = tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
+
+entry deposit (newDeadline : date) {
+ require { 
+  r1: newDeadline > deadline
+      otherwise "New deadline must be after current one!"; 
+ }
+ effect { deadline := newDeadline }
+}
+
+
+entry claim (requestedAmount : tez) {
+ sourced by owner
+ require {
+   r2: now > deadline otherwise "Too soon!";
+ }
+ effect {
+   transfer (min(requestedAmount, balance)) to source
+ }
+}

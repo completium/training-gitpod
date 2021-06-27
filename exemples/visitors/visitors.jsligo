@@ -1,0 +1,40 @@
+type visitor = {
+  name : string,
+  visits : int
+};
+type map_visitors = map<string, visitor>;
+
+type storage = map_visitors;
+type action = | ["Register" , [string, string]] | ["Visit", string];
+type _return = [list<operation>, storage];
+
+let register = ([s, infos]: [storage, [string, string]]) : storage => {
+    let [login, name] = infos;
+    let newVisitor = {
+       name: name,
+       visits: 0  
+    };
+    return Map.update(login, Some(newVisitor), s);
+}
+
+let get_visitor = ([login, visitors]: [string, map_visitors]): visitor => {
+   return match(Map.find_opt (login, visitors), {
+      Some: (user: visitor) => user,
+      None: () => (failwith("Not found") as visitor)
+   });
+};
+
+let visit = (s: storage, login: string) : storage => {
+    let user = get_visitor(login, s);
+    user = ({...user, visits: user.visits + 1});
+    return Map.update(login, Some(user), s);
+}
+
+let main = ([p,s] : [action, storage]) : [list<operation>, storage] => {
+    let newStorage = match(p, {
+      Register : (infos: [string, string]) => register (s, infos),
+      Visit : (login: string) => visit (s, login)
+    });
+    return [list([]) as list<operation>, newStorage];
+}
+

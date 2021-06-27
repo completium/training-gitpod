@@ -1,0 +1,6 @@
+let main = ([params, oldStorage] : [[int, int], [int, int]]) : [list<operation>, [int, int]] => {
+    let [value1, value2] = params;
+    let storage1 = oldStorage[0] + value1;
+    let storage2 = oldStorage[1] + value2;
+    return [list([]) as list<operation>, [storage1, storage2]];
+}

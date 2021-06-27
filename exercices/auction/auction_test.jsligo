@@ -1,0 +1,43 @@
+#include "./auction.jsligo"
+
+let test_code = (): bool => {
+  let owner = Test.nth_bootstrap_account(0);
+  let alice = Test.nth_bootstrap_account(1);
+  let init_storage = {
+      owner: owner,
+      deadline: "2021-06-28t11:10:00Z" as timestamp,
+      bids: Map.empty as map<address, tez>,
+      topBidder: owner,
+      topBid: 0 as tez
+  };
+  let originated_contract = Test.originate(main, init_storage, 0 as tez);
+  let addr = originated_contract[0];
+
+
+  let contr = Test.to_contract(addr);
+
+  Test.set_now("2021-06-28t11:00:00Z" as timestamp);
+  Test.log("Reset with Owner");
+  Test.set_source(owner);
+  Test.log(Test.transfer_to_contract(contr, (Bid()), 10 as tez));
+
+  Test.log("Bid with Alice");
+  Test.set_source(alice);
+  Test.log(Test.transfer_to_contract(contr, (Bid()), 15 as tez));
+
+  Test.set_now("2021-06-28t11:20:00Z" as timestamp);
+  Test.log("Collect top bid");
+  Test.set_source(owner);
+  Test.log(Test.transfer_to_contract(contr, (CollectTopBid()), 0 as tez));
+
+  Test.log("Claim");
+  Test.set_source(owner);
+  Test.log(Test.transfer_to_contract(contr, (Claim()), 0 as tez));
+
+  let result = Test.get_storage(addr);
+  Test.log(result);
+
+  return true;
+};
+
+let test = test_code();

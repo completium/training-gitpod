@@ -1,0 +1,39 @@
+type storage = timestamp;
+let owner = "tz1eGd1Gzh9cpZjW1hpzre2fLSnMAsXqRdJy" as address;
+type action = | ["Deposit" , timestamp] | ["Claim", tez];
+
+let deposit = ([deadline, newDeadline]: [storage, timestamp]): [list<operation>, storage] => {
+    if (newDeadline <= deadline) {
+        return failwith("Recul de deadline") as [list<operation>, storage];
+    } else {
+        return [list([]) as list<operation>, newDeadline];
+    }
+}
+
+let claim = ([deadline, reqAmount]: [storage, tez]): [list<operation>, storage] => {
+    if (Tezos.now < deadline) {
+        return failwith("C'est trop tot") as [list<operation>, storage];
+    } else if (Tezos.sender != owner) {
+        return failwith("Acces interdit") as [list<operation>, storage];
+    } else {
+        let amount = reqAmount;
+        if (amount > Tezos.balance) {
+            amount = Tezos.balance;
+        };
+        let contractOpt = Tezos.get_contract_opt (owner) as option<contract<unit>>;
+        let receiver: contract<unit> = match (contractOpt, {
+            Some: (contract : any) => contract,
+            None: () => failwith("Contract not found.") as contract<unit>
+        });
+        let op : operation = Tezos.transaction(unit, amount, receiver);
+        return [list([op]), deadline];
+    }
+};
+
+
+let main = ([p,s]: [action, storage]) : [list<operation>, storage] => {
+  return match(p, {
+    Deposit: (deadline: timestamp) => deposit(s, deadline),
+    Claim: (n : tez) => claim(s, n)
+  });
+};

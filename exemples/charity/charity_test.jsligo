@@ -1,0 +1,16 @@
+#include "./charity.jsligo"
+
+let test_code = (): bool => {
+  let owner = Test.nth_bootstrap_account(0);
+  let alice = Test.nth_bootstrap_account(1);
+
+  let originated_contract = Test.originate(main, 0 as int, 0 as tez);
+  let addr = originated_contract[0];
+  let contr = Test.to_contract(addr);
+
+  Test.log(Test.transfer_to_contract(contr, Donate(), 10 as tez));
+  Test.log(Test.transfer_to_contract(contr, Collect(5 as tez), 0 as tez));
+  return true;
+};
+
+let test = test_code();

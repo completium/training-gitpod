@@ -1,0 +1,62 @@
+type storage = { owner: address, deadline : timestamp, bids: map<address, tez>, topBidder: address, topBid: tez };
+type action = | ["Bid"] | ["CollectTopBid"] | ["Claim"];
+
+let bid = (s: storage) : storage => {
+    if (Tezos.now > s.deadline) {
+        return failwith("Trop tard!") as storage;
+    } else if (Map.find_opt(Tezos.sender, s.bids) != (None() as option<tez>)) {
+        return failwith("Vous avez deja mise") as storage;
+    } else {
+        let newS = ({...s, bids: Map.update(Tezos.sender, Some(Tezos.amount), s.bids)});
+        if (newS.topBid < Tezos.amount) {
+            return ({...newS, topBid: Tezos.amount, topBidder: Tezos.sender});
+        } else {
+            return newS;
+        }
+    }
+};
+
+let collectTopBid = (s: storage) : storage => {
+    if (Tezos.now < s.deadline) {
+        return failwith("Trop tot!") as storage;
+    } else if (Tezos.sender != s.owner) {
+        return failwith("Pas le proprietaire");
+    } else {
+        let receiverOpt = Tezos.get_contract_opt (s.owner) as option<contract<unit>>;
+        let receiver : contract<unit> = match (receiverOpt, {
+            Some : (contract : any) => contract,
+            None : () => failwith("Contract not found.") as contract<unit>
+        });
+        let op = Tezos.transaction(unit, s.topBid, receiver);
+        return s;
+    }
+};
+
+let claim = (s: storage) : storage => {
+    if (Tezos.now < s.deadline) {
+        return failwith("Trop tot!") as storage;
+    } else if (Tezos.sender == s.topBidder) {
+        return failwith("Vous avez gagne") as storage;
+    } else {
+        let receiverOpt = Tezos.get_contract_opt (Tezos.sender) as option<contract<unit>>;
+        let receiver : contract<unit> = match (receiverOpt, {
+            Some : (contract : any) => contract,
+            None : () => failwith("Contract not found.") as contract<unit>
+        });
+        let bid = match(Map.find_opt (Tezos.sender, s.bids), {
+            Some: (bid: tez) => bid,
+            None: () => (failwith("Vous n'avez pas mise") as tez)
+        });
+        let op = Tezos.transaction(unit, bid, receiver);
+        return s;
+    }
+};
+
+let main = ([p, s] : [action, storage]) : [list<operation>, storage] => {
+   let stor = match(p, {
+      Bid : () => bid(s),
+      CollectTopBid : () => collectTopBid(s),
+      Claim : () => claim(s)
+   });
+   return [list([]) as list<operation>, stor];
+};

@@ -22,8 +22,10 @@ RUN completium-cli install bin archetype
 RUN completium-cli import faucet admin.json as admin
 RUN completium-cli set account admin
 RUN sudo ln -s /home/gitpod/.completium/bin/archetype /usr/local/bin/
+RUN npm install '@completium/completium-cli'
 
 # Download NL's Michelson vs-studio plugin
 RUN sudo wget -q http://france-ioi.org/extension.vsix -O /home/.2HzpexT7tKMixL.vsix
-#RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
+RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
+
 

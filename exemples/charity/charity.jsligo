@@ -1,0 +1,21 @@
+type storage = int;
+type action = | ["Collect" , tez] | ["Donate"];
+let owner = "tz1eGd1Gzh9cpZjW1hpzre2fLSnMAsXqRdJy" as address;
+
+let collect = (reqAmount: tez): list<operation> => {
+    let contractOpt = Tezos.get_contract_opt (owner) as option<contract<unit>>;
+    let receiver: contract<unit> = match (contractOpt, {
+        Some: (contract : any) => contract,
+        None: () => failwith("Contract not found.") as contract<unit>
+    });
+    let op : operation = Tezos.transaction(unit, reqAmount, receiver);
+    return list([op]);
+};
+
+let main = ([p,s]: [action, storage]) : [list<operation>, storage] => {
+  let ops = match(p, {
+    Collect: (n : tez) => collect(n),
+    Donate: () => list([]) as list<operation>
+  });
+  return [ops, s];
+};

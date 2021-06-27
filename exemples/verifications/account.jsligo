@@ -1,0 +1,22 @@
+type storage = [int, timestamp, address];
+type action = ["Increment" , int] | ["Decrement"];
+
+let add = ([oldStorage, param]: [storage, int]) : storage => [oldStorage[0] + param, oldStorage[1], oldStorage[2]];
+
+let sub  = ([total, lastSubDate, owner]: storage) : storage => {
+    if (Tezos.sender != owner) {
+        return failwith("Seul le proprietaire peut retirer") as storage;
+    } else if (Tezos.now < lastSubDate + 300) {
+        return failwith("Vous devez attendre 5 minutes avant de retirer 1") as storage;
+    } else {
+    return [total - 1, Tezos.now, owner];
+}
+};
+
+let main = ([p, s] : [action, storage]) : [list<operation>, storage] => {
+   let stor = match(p, {
+      Increment : (n : int) => add(s, n),
+      Decrement : () => sub(s)
+   });
+   return [list([]) as list<operation>, stor];
+}
