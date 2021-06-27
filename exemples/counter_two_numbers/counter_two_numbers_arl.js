@@ -3,7 +3,7 @@ const Completium = require('@completium/completium-cli');
 
 const test = async () => {
  const completium = new Completium ();
- await completium.originate('counter.arl');
+ await completium.originate('counter_two_numbers.arl');
  await completium.call('counter', { with: "(3,4)"});
  const storage = await completium.getStorage('counter');
  const counter = storage.toNumber();
