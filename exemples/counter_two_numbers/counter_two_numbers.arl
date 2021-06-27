@@ -1,4 +1,4 @@
-archetype counter
+archetype counter_two_numbers
 
 variable v1 : nat = 6
 variable v2 : nat = 7
