@@ -31,7 +31,8 @@ tasks:
       WelcomeFile='/workspace/training-gitpod/Welcome.md'
       # gp or code won't work until the IDE GUI is ready
       until gp open ${WelcomeFile} ; do sleep 1; done
-      code --install-extension /home/.2HzpexT7tKMixL.vsix
+      code --install-extension /home/.2HzpexT7tKMixL.vsix ;
+      cd /workspace/training-gitpod/ && npm install '@completium/completium-cli'
       clear
 #
 #

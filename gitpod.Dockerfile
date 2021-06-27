@@ -25,7 +25,7 @@ RUN chmod +x ~/.completium/bin/archetype
 RUN completium-cli import faucet admin.json as admin
 RUN completium-cli set account admin
 RUN sudo ln -s /home/gitpod/.completium/bin/archetype /usr/local/bin/
-RUN cd /workspace/training-gitpod/ && npm install '@completium/completium-cli'
+# RUN cd /workspace/training-gitpod/ && npm install '@completium/completium-cli'
 
 
 # Download NL's Michelson vs-studio plugin
