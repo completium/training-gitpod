@@ -1,6 +1,6 @@
-# Vérifications : tests
+# Verifications : tests
 
-Testez que le contrat de l'exercice précédent (Vérifications), fonctionne bien.
+Testez que le contrat de l'exercice précédent (Vérifications_1), fonctionne bien.
 
 Vérifiez en particulier :
 - Que la même personne ne peut pas retirer deux fois

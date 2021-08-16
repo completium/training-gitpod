@@ -3,9 +3,9 @@ type action = | ["Bid"] | ["CollectTopBid"] | ["Claim"];
 
 let bid = (s: storage) : storage => {
     if (Tezos.now > s.deadline) {
-        return failwith("Trop tard!") as storage;
+        return failwith("Too late!") as storage;
     } else if (Map.find_opt(Tezos.sender, s.bids) != (None() as option<tez>)) {
-        return failwith("Vous avez deja mise") as storage;
+        return failwith("You already bid") as storage;
     } else {
         let newS = ({...s, bids: Map.update(Tezos.sender, Some(Tezos.amount), s.bids)});
         if (newS.topBid < Tezos.amount) {
@@ -18,14 +18,14 @@ let bid = (s: storage) : storage => {
 
 let collectTopBid = (s: storage) : storage => {
     if (Tezos.now < s.deadline) {
-        return failwith("Trop tot!") as storage;
+        return failwith("Too early!") as storage;
     } else if (Tezos.sender != s.owner) {
-        return failwith("Pas le proprietaire");
+        return failwith("Not the owner");
     } else {
         let receiverOpt = Tezos.get_contract_opt (s.owner) as option<contract<unit>>;
         let receiver : contract<unit> = match (receiverOpt, {
             Some : (contract : any) => contract,
-            None : () => failwith("Contract not found.") as contract<unit>
+            None : () => failwith("Contract not found") as contract<unit>
         });
         let op = Tezos.transaction(unit, s.topBid, receiver);
         return s;
@@ -34,18 +34,18 @@ let collectTopBid = (s: storage) : storage => {
 
 let claim = (s: storage) : storage => {
     if (Tezos.now < s.deadline) {
-        return failwith("Trop tot!") as storage;
+        return failwith("Too early!") as storage;
     } else if (Tezos.sender == s.topBidder) {
-        return failwith("Vous avez gagne") as storage;
+        return failwith("You won the auction") as storage;
     } else {
         let receiverOpt = Tezos.get_contract_opt (Tezos.sender) as option<contract<unit>>;
         let receiver : contract<unit> = match (receiverOpt, {
             Some : (contract : any) => contract,
-            None : () => failwith("Contract not found.") as contract<unit>
+            None : () => failwith("Contract not found") as contract<unit>
         });
         let bid = match(Map.find_opt (Tezos.sender, s.bids), {
             Some: (bid: tez) => bid,
-            None: () => (failwith("Vous n'avez pas mise") as tez)
+            None: () => (failwith("You have not bid") as tez)
         });
         let op = Tezos.transaction(unit, bid, receiver);
         return s;

@@ -12,8 +12,8 @@ class Account(sp.Contract):
 
     @sp.entry_point
     def sub(self):
-        sp.verify(sp.sender == owner, "Seul le proprietaire peut retirer")
-        sp.verify(sp.now - self.data.lastSubDate > 300, "Attendez 5 minutes avant de retirer 1")
+        sp.verify(sp.sender == owner, "Only the owner may decrement")
+        sp.verify(sp.now - self.data.lastSubDate > 300, "Wait 5 minutes before you decrement again")
         self.data.total -= 1
         self.data.lastSubDate = sp.now
 

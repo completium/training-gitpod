@@ -9,7 +9,7 @@ entry add(value : nat) { total += value }
 entry sub () {
   called by owner
   require { r1 : now - lastSubDate > 5m 
-            otherwise "Attendez 5 minutes avant de retirer 1" }
+            otherwise "Wait 5 minutes before you decrement again" }
   effect {
      total -= 1;
      lastSubDate := now;

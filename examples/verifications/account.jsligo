@@ -5,9 +5,9 @@ let add = ([oldStorage, param]: [storage, int]) : storage => [oldStorage[0] + pa
 
 let sub  = ([total, lastSubDate, owner]: storage) : storage => {
     if (Tezos.sender != owner) {
-        return failwith("Seul le proprietaire peut retirer") as storage;
+        return failwith("Only the owner may decrement") as storage;
     } else if (Tezos.now < lastSubDate + 300) {
-        return failwith("Vous devez attendre 5 minutes avant de retirer 1") as storage;
+        return failwith("Wait 5 minutes before you decrement again") as storage;
     } else {
     return [total - 1, Tezos.now, owner];
 }

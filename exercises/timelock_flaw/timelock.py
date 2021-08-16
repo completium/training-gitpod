@@ -13,8 +13,8 @@ class TimeLock(sp.Contract):
 
    @sp.entry_point
    def claim(self, requestedAmount):
-      sp.verify(sp.now > self.data.deadline, "C'est trop tot")
-      sp.verify(sp.source == owner, "Acces interdit")
+      sp.verify(sp.now > self.data.deadline, "Too early")
+      sp.verify(sp.source == owner, "Access forbiden")
       amount = sp.local('amount', requestedAmount)
       sp.if (amount.value >= sp.balance):
          amount.value = sp.balance
