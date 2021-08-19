@@ -1,4 +1,4 @@
-# Concatenating strings
+# Exercise first_2
 
 Use the "counter" example contract as an inspiration source to create a contract that has a string as its storage.
 
