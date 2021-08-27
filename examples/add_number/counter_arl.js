@@ -1,10 +1,10 @@
 const assert = require('assert');
-const { deploy, call } = require('@completium/completium-cli');
+const { deploy } = require('@completium/completium-cli');
 
 const test = async () => {
     const [counter, _] = await deploy('counter.arl');
-    await call('counter', { });
-    const storage = await counter.storage();
+    await counter.default({ });
+    const storage = await counter.getStorage();
     const count = storage.toNumber();
     assert(count == 3, "Invalid counter value");
 }

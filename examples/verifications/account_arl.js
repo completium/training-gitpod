@@ -1,12 +1,12 @@
 const assert     = require('assert');
-const Completium = require('@completium/completium-cli');
+const { deploy } = require('@completium/completium-cli');
+const { countReset } = require('node:console');
 
 const test = async () => {
-  const completium = new Completium ();
-  await completium.originate('account.arl');
-  await completium.call("account", { entry : "add" , with : "3", as : "alice" });
-  await completium.call("account", { entry : "sub", as : "alice" });
-  const storage = await completium.getStorage("account");
+  const [account, _] = await deploy('account.arl');
+  await account.add({ arg : { value : "3"}, as : "alice" });
+  await account.sub({ as : "alice" });
+  const storage = await account.getStorage();
   assert(storage.total.toNumber() === 2, "Invalid");
 }
 test();
