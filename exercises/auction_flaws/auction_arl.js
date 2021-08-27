@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { deploy, getStorage } = require('@completium/completium-cli');
+const { deploy } = require('@completium/completium-cli');
 
 const test = async () => {
   const alice = getAddress("alice");
