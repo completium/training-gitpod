@@ -1,6 +1,5 @@
 const assert     = require('assert');
 const { deploy } = require('@completium/completium-cli');
-const { countReset } = require('node:console');
 
 const test = async () => {
   const [account, _] = await deploy('account.arl');
