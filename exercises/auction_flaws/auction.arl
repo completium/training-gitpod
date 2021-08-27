@@ -18,14 +18,14 @@ entry bid () {
 
 entry collectTopBid () {
  called by owner
- require { r2 : now > deadline otherwise "Too early!"; }
+ require { r2 : now >= deadline otherwise "Too early!"; }
  effect { transfer bidder[topBidder].amount to caller; }
 }
 
 entry claim () {
  called by bidder
  require {
-   r3 : now > deadline      otherwise "Too early!";
+   r3 : now >= deadline      otherwise "Too early!";
    r4 : caller <> topBidder otherwise "You won the auction";
  }
  effect { transfer bidder[caller].amount to caller }
