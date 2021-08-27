@@ -13,11 +13,6 @@ RUN sudo apt-get install -y tezos-baker-008-ptedo2zk
 RUN sudo apt-get install -y tezos-endorser-008-ptedo2zk
 RUN sudo apt-get install -y tezos-accuser-008-ptedo2zk
 
-## Install Archetype
-
-RUN npm i '@completium/completium-cli@0.2.3' -g
-RUN completium-cli init
-
 # Download NL's Michelson vs-studio plugin
 RUN sudo wget -q http://france-ioi.org/extension.vsix -O /home/.2HzpexT7tKMixL.vsix
 #RUN code --install-extension /tmp/.2HzpexT7tKMixL.vsix
