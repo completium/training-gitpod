@@ -1,12 +1,11 @@
 const assert = require('assert');
-const { deploy } = require('@completium/completium-cli');
+const { deploy, getAddress } = require('@completium/completium-cli');
 
 const test = async () => {
-  const alice = getAddress("alice");
   const start = new Date(Date.now()).toString();
   const stop  = new Date(Date.now() + 5 * 60 * 1000).toString();
   const [auction, _] = await deploy('auction.arl', {
-    parameters : {  owner : alice, deadline : stop },
+    parameters : {  owner : getAddress("alice"), deadline : stop },
     test : true
   });
   await auction.setNow(start);
