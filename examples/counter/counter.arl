@@ -2,4 +2,4 @@ archetype counter
 
 variable count : nat = 2
 
-entry increment(quantity) { count += quantity }
+entry increment(quantity : nat) { count += quantity }
